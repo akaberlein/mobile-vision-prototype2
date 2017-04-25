@@ -5,7 +5,7 @@ A simple Android application to figure out the effectiveness of [Text Recognitio
 ##### To run (works with Android Lollipop and higher only):
 1. Clone this repository from the terminal.
 ```
-git clone https://github.com/arjunkrishnababu96/mobile-vision-prototype.git
+git clone https://github.com/arjunkrishnababu96/mobile-vision-prototype2.git
 ```
 
 2. Open the project downloaded above in Android Studio.
