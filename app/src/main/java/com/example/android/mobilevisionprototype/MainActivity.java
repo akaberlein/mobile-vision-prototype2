@@ -102,8 +102,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId())  {
             case R.id.button:
                 Toast.makeText(this, "Process button clicked!", Toast.LENGTH_SHORT).show();
-                detectText();
-//                showCreateEventDialog(detectText());
+//                detectText();
+                showCreateEventDialog(detectText());
                 break;
         }
     }
@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         Log.v(TAG, "Positive click in MainActivity!");
+        detectText2();
         Toast.makeText(getApplicationContext(), "Create Event!", Toast.LENGTH_SHORT).show();
     }
 
@@ -174,101 +175,113 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.v(TAG, " Text! " + textBlock.getValue());
         }
 
-        // getDate method looks for months and extract the line that contains the month
-        getDate(detectedText);
-
 //        Toast.makeText(this, detectedText, Toast.LENGTH_LONG).show();
         return detectedText;
+    }
+
+    public void detectText2() {
+        String detectedText = detectText();
+        getDate(detectedText);
     }
 
     // getDate method looks for months and extract the line that contains the month
     public String getDate(String lineText) {
         Scanner scanner = new Scanner(lineText);
-        String line = "";
+        String date = "";
+        Scanner scanner2 = new Scanner(lineText);
+        String title = "";
+
+        title = scanner2.nextLine();
+
+        String location = lineText.substring(lineText.lastIndexOf("\n"));
+
         while (scanner.hasNext()) {
-            line = scanner.nextLine();
-            if (line.contains("Jan")) {
-                Log.v(TAG, " Date: " + line);
-                setUpEvent(line, 1);
+            date = scanner.nextLine();
+            if (date.contains("Jan")) {
+                Log.v(TAG, " Date: " + date);
+                setUpEvent(date, 0, title, location);
             }
-            else if (line.contains("Feb")) {
-                Log.v(TAG, " Date: " + line);
-                setUpEvent(line, 2);
+            else if (date.contains("Feb")) {
+                Log.v(TAG, " Date: " + date);
+                setUpEvent(date, 1, title, location);
             }
-            else if (line.contains("Mar")) {
-                Log.v(TAG, " Date: " + line);
-                setUpEvent(line, 3);
+            else if (date.contains("Mar")) {
+                Log.v(TAG, " Date: " + date);
+                setUpEvent(date, 2, title, location);
             }
-            else if (line.contains("Apr")) {
-                Log.v(TAG, " Date: " + line);
-                setUpEvent(line, 4);
+            else if (date.contains("Apr")) {
+                Log.v(TAG, " Date: " + date);
+                setUpEvent(date, 3, title, location);
             }
-            else if (line.contains("May")) {
-                Log.v(TAG, " Date: " + line);
-                setUpEvent(line, 5);
+            else if (date.contains("May")) {
+                Log.v(TAG, " Date: " + date);
+                setUpEvent(date, 4, title, location);
             }
-            else if (line.contains("Jun")) {
-                Log.v(TAG, " Date: " + line);
-                setUpEvent(line, 6);
+            else if (date.contains("Jun")) {
+                Log.v(TAG, " Date: " + date);
+                setUpEvent(date, 5, title, location);
             }
-            else if (line.contains("Jul")) {
-                Log.v(TAG, " Date: " + line);
-                setUpEvent(line, 7);
+            else if (date.contains("Jul")) {
+                Log.v(TAG, " Date: " + date);
+                setUpEvent(date, 6, title, location);
             }
-            else if (line.contains("Aug")) {
-                Log.v(TAG, " Date: " + line);
-                setUpEvent(line, 8);
+            else if (date.contains("Aug")) {
+                Log.v(TAG, " Date: " + date);
+                setUpEvent(date, 7, title, location);
             }
-            else if (line.contains("Sept")) {
-                Log.v(TAG, " Date: " + line);
-                setUpEvent(line, 9);
+            else if (date.contains("Sept")) {
+                Log.v(TAG, " Date: " + date);
+                setUpEvent(date, 8, title, location);
             }
-            else if (line.contains("Oct")) {
-                Log.v(TAG, " Date: " + line);
-                setUpEvent(line, 10);
+            else if (date.contains("Oct")) {
+                Log.v(TAG, " Date: " + date);
+                setUpEvent(date, 9, title, location);
             }
-            else if (line.contains("Nov")) {
-                Log.v(TAG, " Date: " + line);
-                setUpEvent(line, 11);
+            else if (date.contains("Nov")) {
+                Log.v(TAG, " Date: " + date);
+                setUpEvent(date, 10, title, location);
             }
-            else if (line.contains("Dec")) {
-                Log.v(TAG, " Date: " + line);
-                setUpEvent(line, 12);
+            else if (date.contains("Dec")) {
+                Log.v(TAG, " Date: " + date);
+                setUpEvent(date, 11, title, location);
             }
 
         }
-        return line;
+        return date;
     }
 
-    public void setUpEvent(String date, int y) {
+    public void setUpEvent(String date, int month, String firstLine, String lastLine) {
         String splitWords = date;
         String[] strArray = splitWords.split(" ");
 
-        int x = Integer.parseInt(strArray[0]);
+        int day = Integer.parseInt(strArray[0]);
         //int y = Integer.parseInt(strArray[1]);
-        int z = Integer.parseInt(strArray[2]);
+        int year = Integer.parseInt(strArray[2]);
 
-        Log.v(TAG, x + "\n");
-        Log.v(TAG, y + "\n");
-        Log.v(TAG, z + "\n");
+        Log.v(TAG, day + "\n");
+        Log.v(TAG, month + "\n");
+        Log.v(TAG, year + "\n");
+        Log.v(TAG, "First Line: " + firstLine + "\n");
+        Log.v(TAG, "Last Line: " + lastLine + "\n");
 
         Calendar startTime = Calendar.getInstance();
-        startTime.set(z, y, x, 8, 0);
+        startTime.set(year, month, day, 8, 0);
 
         Calendar endTime = Calendar.getInstance();
-        endTime.set(z, y, x, 9, 0);
+        endTime.set(year, month, day, 9, 0);
 
         long eventTime1 = startTime.getTimeInMillis();
         long eventTime2 = endTime.getTimeInMillis();
 
-        String description = "Event Description";
+        String title = firstLine;
+        String location = lastLine;
         Intent intent = new Intent(Intent.ACTION_EDIT);
         intent.setType("vnd.android.cursor.item/event");
         intent.putExtra("beginTime", eventTime1);
         intent.putExtra("endTime", eventTime2);//+60*60*1000);
-        intent.putExtra("title", "A Test Event from android app");
-        intent.putExtra("description", description);
-        intent.putExtra("eventLocation", "ECE Building");
+        intent.putExtra("title", title);
+        intent.putExtra("description", "Event Description");
+        intent.putExtra("eventLocation", location);
         startActivity(intent);
     }
 
